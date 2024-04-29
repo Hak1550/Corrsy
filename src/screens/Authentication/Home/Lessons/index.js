@@ -13,7 +13,6 @@ import { setLessonsProgressRequest } from '../../../../store/actions/Home'
 const Lesson = () => {
   const dispatch = useDispatch()
   const { lessons, lesLoading } = useSelector(state => state.home)
-  console.log('lessons', lessons);
   const handleWidget = (widget) => {
     navigate('Widgets', { widget })
     dispatch(setLessonsProgressRequest(widget))

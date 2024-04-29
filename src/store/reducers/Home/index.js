@@ -7,14 +7,15 @@ const INITIAL_STATE = {
   courses: [],
   subjects: [],
   lessons: [],
-  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWVkYzYyY2MxYWEwMDc4MDAwZjljMDEiLCJpYXQiOjE3MTM3MzQxOTh9.2ZIPdqfGIEbm0t6iSE14HTQw1ASehe_hijG_iEnWFJU',
+  token:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWVkYzYyY2MxYWEwMDc4MDAwZjljMDEiLCJpYXQiOjE3MTM3MzQxOTh9.2ZIPdqfGIEbm0t6iSE14HTQw1ASehe_hijG_iEnWFJU',
   userId: '65edc62cc1aa0078000f9c01',
   gradeId: '6625514923f87505231c8f89',
 };
 
 export default function homeReducer(state = INITIAL_STATE, action) {
   const newState = JSON.parse(JSON.stringify(state));
-  const { courses, subjects, lessons } = newState;
+  const {courses, subjects, lessons} = newState;
 
   switch (action.type) {
     case types.GET_COURSES_REQUEST:
@@ -22,14 +23,14 @@ export default function homeReducer(state = INITIAL_STATE, action) {
         ...newState,
         loading: true,
         lessons: [],
-        subjects: []
+        subjects: [],
       };
 
     case types.GET_COURSES_SUCCESS:
-      let course = action?.response?.data
+      let course = action?.response?.data;
       course.forEach(fe => {
-        fe.isSelected = false
-      })
+        fe.isSelected = false;
+      });
       return {
         ...newState,
         loading: false,
@@ -46,22 +47,22 @@ export default function homeReducer(state = INITIAL_STATE, action) {
         ...newState,
         subLoading: true,
         lessons: [],
-        subjects: []
+        subjects: [],
       };
 
     case types.GET_SUBJECTS_SUCCESS:
-      let cor_id = action?.id?.course_id
-      let sub = action?.response?.data
+      let cor_id = action?.id?.course_id;
+      let sub = action?.response?.data;
       sub[0]?.lessons.forEach(fe => {
         fe.progress = 0;
-      })
+      });
       courses.forEach(fe => {
         if (fe._id === cor_id) {
-          fe.isSelected = true
+          fe.isSelected = true;
         } else {
-          fe.isSelected = false
+          fe.isSelected = false;
         }
-      })
+      });
       return {
         ...newState,
         subLoading: false,
@@ -73,19 +74,18 @@ export default function homeReducer(state = INITIAL_STATE, action) {
         subLoading: false,
       };
 
-
     case types.GET_LESSONS_REQUEST:
       return {
         ...newState,
         lesLoading: true,
-        lessons: []
+        lessons: [],
       };
 
     case types.GET_LESSONS_SUCCESS:
-      let les = action?.response?.data
+      let les = action?.response?.data;
       les[0]?.widgets.forEach(fe => {
         fe.isSeen = false;
-      })
+      });
       return {
         ...newState,
         lesLoading: false,
@@ -100,20 +100,17 @@ export default function homeReducer(state = INITIAL_STATE, action) {
     case types.SET_LESSON_PROGRESS:
       subjects[0]?.lessons.forEach(f => {
         if (f._id === lessons[0]?._id) {
-          if (!action?.data[0]?.isSeen) {
-            f.progress = f.progress + (1 / lessons[0]?.widgets.length)
+          if (!action?.data?.isSeen) {
+            console.log('isSeen');
+            f.progress = f.progress + 1 / lessons[0]?.widgets.length;
+            f.seen = true;
           }
         }
-      })
-      // if (!action?.data[0]?.isSeen) {
-      //   lessons[0]?.widgets?.forEach(f => {
-      //     if (f._id === action?.data[0]?._id) {
-      //       f?.isSeen = true
-      //     }
-      //   })
-      //     }
-      // }
-      console.log('SET_LESSON_PROGRESS', action?.data, subjects, lessons);
+      });
+      return {
+        ...newState,
+        subjects,
+      };
 
     default:
       return state;

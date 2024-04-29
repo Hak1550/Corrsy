@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         borderWidth: isSelected ? 1 : 0,
 
     }]),
-    eachCourseImg: { height: 20, width: 20, marginRight: 5 },
+    eachCourseImg: { height: 25, width: 25, marginRight: 5 },
     eachSubject: [STYLES.VerticalAlign, { marginHorizontal: 5, marginVertical: 10, padding: 10, borderRadius: 10, width: '100%' }],
     eachSubjectImg: { height: 40, width: 40, marginBottom: 5 },
     lessonViews: { width: '100%', height: '70%', backgroundColor: Colors.grayColor, borderRadius: 20, position: 'absolute', bottom: -15 }
