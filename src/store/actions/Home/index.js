@@ -49,3 +49,11 @@ export const getLessonsFailed = response => ({
   type: types.GET_LESSONS_FAILED,
   response,
 });
+
+
+//  getLessonsProfile
+export const setLessonsProgressRequest = data => ({
+  type: types.SET_LESSON_PROGRESS,
+  data,
+});
+

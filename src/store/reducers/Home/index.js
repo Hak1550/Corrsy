@@ -14,7 +14,7 @@ const INITIAL_STATE = {
 
 export default function homeReducer(state = INITIAL_STATE, action) {
   const newState = JSON.parse(JSON.stringify(state));
-  const { courses } = newState;
+  const { courses, subjects, lessons } = newState;
 
   switch (action.type) {
     case types.GET_COURSES_REQUEST:
@@ -53,7 +53,7 @@ export default function homeReducer(state = INITIAL_STATE, action) {
       let cor_id = action?.id?.course_id
       let sub = action?.response?.data
       sub[0]?.lessons.forEach(fe => {
-        fe.progress = 0
+        fe.progress = 0;
       })
       courses.forEach(fe => {
         if (fe._id === cor_id) {
@@ -82,6 +82,10 @@ export default function homeReducer(state = INITIAL_STATE, action) {
       };
 
     case types.GET_LESSONS_SUCCESS:
+      let les = action?.response?.data
+      les[0]?.widgets.forEach(fe => {
+        fe.isSeen = false;
+      })
       return {
         ...newState,
         lesLoading: false,
@@ -92,6 +96,24 @@ export default function homeReducer(state = INITIAL_STATE, action) {
         ...newState,
         lesLoading: false,
       };
+
+    case types.SET_LESSON_PROGRESS:
+      subjects[0]?.lessons.forEach(f => {
+        if (f._id === lessons[0]?._id) {
+          if (!action?.data[0]?.isSeen) {
+            f.progress = f.progress + (1 / lessons[0]?.widgets.length)
+          }
+        }
+      })
+      // if (!action?.data[0]?.isSeen) {
+      //   lessons[0]?.widgets?.forEach(f => {
+      //     if (f._id === action?.data[0]?._id) {
+      //       f?.isSeen = true
+      //     }
+      //   })
+      //     }
+      // }
+      console.log('SET_LESSON_PROGRESS', action?.data, subjects, lessons);
 
     default:
       return state;
