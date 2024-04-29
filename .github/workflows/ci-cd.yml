@@ -1,0 +1,80 @@
+  name: Raftaar Tanzania
+
+  on:
+    push:
+      branches:
+        - main
+
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Setup Node.js and Yarn
+          uses: actions/setup-node@v2
+          with:
+            node-version: '20'
+            registry-url: 'https://registry.yarnpkg.com/'
+
+        - name: Install dependencies
+          run: |
+            yarn install
+            npx pod-install
+
+        - name: Start Emulator
+          run: emulator -avd gqy9zl8xovpnvck7 -no-audio -no-window -verbose -gpu off &
+            sleep 30
+            
+        - name: Build the Android app
+          run: |
+            cd android && ./gradlew bundleRelease --no-daemon
+    
+        # - name: Build and Install Release APK
+        #   run: |
+        #      cd android
+        #      ./gradlew installRelease
+          
+
+
+      #   - name: Build and test
+      #     run: yarn run test
+
+    deploy-android:
+      runs-on: ubuntu-latest
+      needs: build
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+  
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11.0.18'
+
+      - name: Set up Gradle
+        run: |
+            mkdir -p ~/.gradle && echo "org.gradle.daemon=false" >> ~/.gradle/gradle.properties
+      
+      - name: Deploy to Google Play
+        uses: wzieba/Google-Play-Publisher@v3
+        with:
+          credentials: 78d3e16f781018dd3b8ae73c5649c2add368ec46
+          packageName: com.corrsy
+          track: beta # or alpha, beta, production, etc.
+          versionCode: 1
+          aab: app/build/outputs/bundle/release/app-release.aab
+          # releaseNotesFile: release-notes.txt
+          # recentChangesFile: recent-changes.txt
+          # mappingFile: app/build/outputs/mapping/release/mapping.txt
+          # args: distribute -g AIzaSyCIHo81jpi2wqLhMQAHXcvFgD4wZdTeEkk
+        env:
+            GOOGLE_MAP_API_KEY: AIzaSyD3OOr0tp_LPqtRwNPxwKm5yQdDOYuYNso
+            WHATSAPP_NUMBER: 255750596000
+            CELLPHONE_NUMBER: 255750596000
+            STAGING_BASE_URL: https://tanzania-uat.raftaarapp.com/api/raftaar
+            ADMIN_BASE_URL: https://africa.raftaarapp.com/api/raftaar
+            APP_FLYER_KEY: fc7P29E53ed4cFY49ndLsB

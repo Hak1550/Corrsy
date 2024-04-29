@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "877323904528",
+    "project_id": "raftaar-tanzania",
+    "storage_bucket": "raftaar-tanzania.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877323904528:android:ae713e0f3983bda51e8c95",
+        "android_client_info": {
+          "package_name": "com.corrsy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIHo81jpi2wqLhMQAHXcvFgD4wZdTeEkk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
