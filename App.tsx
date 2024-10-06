@@ -18,7 +18,7 @@ const App = () => {
           </SafeAreaView>
           <Toast
             config={toastConfig}
-            position={'top'}
+            position={'bottom'}
             autoHide={true}
             visibilityTime={1000}
             height={100}
